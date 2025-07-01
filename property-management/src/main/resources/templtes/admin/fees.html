@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物业管理系统 - 物业费管理</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+    }
+    .fee-card {
+      border-left: 4px solid;
+    }
+    .status-unpaid {
+      border-left-color: #dc3545;
+    }
+    .status-paid {
+      border-left-color: #28a745;
+    }
+    .status-overdue {
+      border-left-color: #ffc107;
+    }
+    .search-box {
+      position: relative;
+    }
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      color: var(--primary-color);
+    }
+    .search-box input {
+      padding-left: 40px;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+<body>
+<!-- 侧边栏和导航栏代码与admin-dashboard.html相同 -->
+
+<div class="main-content">
+  <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <!-- 导航栏代码与admin-dashboard.html相同 -->
+  </nav>
+
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="bi bi-cash-coin me-2"></i> 物业费管理</h4>
+      <div>
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#generateFeesModal">
+          <i class="bi bi-file-earmark-plus me-1"></i> 生成账单
+        </button>
+        <button class="btn btn-outline-primary">
+          <i class="bi bi-download me-1"></i> 导出Excel
+        </button>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card card-custom">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="search-box">
+                  <i class="bi bi-search"></i>
+                  <input type="text" class="form-control" placeholder="搜索住户或账单...">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="btn-group float-end">
+                  <button class="btn btn-outline-secondary active">全部</button>
+                  <button class="btn btn-outline-secondary">未缴</button>
+                  <button class="btn btn-outline-secondary">已缴</button>
+                  <button class="btn btn-outline-secondary">逾期</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>账单编号</th>
+                  <th>住户信息</th>
+                  <th>账单周期</th>
+                  <th>应缴金额</th>
+                  <th>缴费状态</th>
+                  <th>缴费日期</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>#FEE-2023-0115</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">张先生</h6>
+                        <small class="text-muted">A栋502室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>2023年11月</td>
+                  <td>¥1,200.00</td>
+                  <td><span class="badge bg-success">已缴纳</span></td>
+                  <td>2023-11-05</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-receipt"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FEE-2023-0116</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">李女士</h6>
+                        <small class="text-muted">B栋301室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>2023年11月</td>
+                  <td>¥1,200.00</td>
+                  <td><span class="badge bg-danger">未缴纳</span></td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-receipt"></i></button>
+                    <button class="btn btn-sm btn-outline-warning"><i class="bi bi-envelope"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#FEE-2023-0117</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">王先生</h6>
+                        <small class="text-muted">C栋102室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>2023年11月</td>
+                  <td>¥1,200.00</td>
+                  <td><span class="badge bg-warning">逾期</span></td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-receipt"></i></button>
+                    <button class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-envelope"></i></button>
+                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-telephone"></i></button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <nav aria-label="Page navigation" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">下一页</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 生成账单模态框 -->
+<div class="modal fade" id="generateFeesModal" tabindex="-1" aria-labelledby="generateFeesModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="generateFeesModalLabel">生成物业费账单</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="feePeriod" class="form-label">账单周期</label>
+            <select class="form-select" id="feePeriod" required>
+              <option value="">选择月份</option>
+              <option value="2023-12">2023年12月</option>
+              <option value="2024-01">2024年1月</option>
+              <option value="2024-02">2024年2月</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="feeAmount" class="form-label">基础物业费</label>
+            <div class="input-group">
+              <span class="input-group-text">¥</span>
+              <input type="number" class="form-control" id="feeAmount" value="1000" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="feeExtra" class="form-label">附加费用</label>
+            <div class="input-group">
+              <span class="input-group-text">¥</span>
+              <input type="number" class="form-control" id="feeExtra" value="200">
+              <span class="input-group-text">备注</span>
+              <input type="text" class="form-control" placeholder="如:公共区域维护费">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">缴费截止日</label>
+            <input type="date" class="form-control" id="dueDate" required>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="sendNotification" checked>
+            <label class="form-check-label" for="sendNotification">
+              生成后发送缴费通知
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">生成账单</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // 侧边栏切换代码与admin-dashboard.html相同
+</script>
+</body>
+</html>

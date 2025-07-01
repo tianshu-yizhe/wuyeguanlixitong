@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物业管理系统 - 专业登录</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #4a6bff;
+      --error-color: #ff4757;
+      --success-color: #2ed573;
+    }
+
+    body {
+      background: #f8f9fa;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, var(--primary-color), #6c5ce7);
+      color: white;
+      padding: 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .login-header h3 {
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .login-body {
+      padding: 32px;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 14px 16px;
+      border: 1px solid #e0e3e8;
+      transition: all 0.2s;
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, var(--primary-color), #6c5ce7);
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      width: 100%;
+      color: white;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: all 0.2s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(74, 107, 255, 0.2);
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1100;
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<!-- Toast通知容器（默认隐藏） -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- 主登录表单（包含完整的登录按钮） -->
+<div class="container">
+  <div class="login-container mx-auto">
+    <div class="login-header">
+      <h3>
+        <i class="bi bi-building"></i>
+        物业管理系统
+      </h3>
+    </div>
+
+    <div class="login-body">
+      <form id="loginForm" th:action="@{/login}" method="post">
+        <div class="mb-4">
+          <label for="username" class="form-label text-muted small mb-2">用户名</label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="请输入您的用户名" required>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="form-label text-muted small mb-2">密码</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="请输入您的密码" required>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe" name="remember-me">
+            <label class="form-check-label text-muted small" for="rememberMe">保持登录</label>
+          </div>
+          <a href="#" class="text-muted small">忘记密码？</a>
+        </div>
+
+        <!-- 完整的登录按钮 -->
+        <button type="submit" class="btn btn-login">
+          <i class="bi bi-box-arrow-in-right me-2"></i> 登录系统
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has('error')) {
+      showToast('登录失败', '提供的凭据无法验证，请检查后重试', 'danger');
+    }
+
+    if (urlParams.has('logout')) {
+      showToast('登出成功', '您已安全退出系统', 'success');
+    }
+
+    function showToast(title, message, type) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+
+      toast.className = `toast show bg-${type} text-white`;
+      toast.innerHTML = `
+                    <div class="toast-header bg-${type} text-white border-0">
+                        <strong class="me-auto">
+                            <i class="bi ${type === 'danger' ? 'bi-shield-lock' : 'bi-check-circle'} me-2"></i>
+                            ${title}
+                        </strong>
+                        <button type="button" class="btn-close btn-close-white" onclick="this.closest('.toast').remove()"></button>
+                    </div>
+                    <div class="toast-body">${message}</div>
+                `;
+
+      container.appendChild(toast);
+      container.style.display = 'block';
+
+      setTimeout(() => {
+        toast.remove();
+        if (!container.hasChildNodes()) {
+          container.style.display = 'none';
+        }
+      }, 5000);
+    }
+  });
+</script>
+</body>
+</html>

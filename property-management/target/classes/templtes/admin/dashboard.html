@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物业管理系统 - 管理员面板</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+    }
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      color: white;
+      height: 100vh;
+      position: fixed;
+      width: 250px;
+      transition: all 0.3s;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-header {
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-menu {
+      padding: 0;
+      list-style: none;
+    }
+    .sidebar-menu li {
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s;
+    }
+    .sidebar-menu li:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-menu li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar-menu li.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    .navbar-custom {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .card-custom {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+    .card-custom:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    .card-icon {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+    .welcome-card {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        margin-left: -250px;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .sidebar.active {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-header text-center">
+    <h4><i class="bi bi-building"></i> 物业管理系统</h4>
+    <p class="mb-0 text-muted">管理员面板</p>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="active">
+      <a href="#"><i class="bi bi-speedometer2 me-2"></i> 控制面板</a>
+    </li>
+    <li>
+      <a href="residents.html"><i class="bi bi-people me-2"></i> 住户管理</a>
+    </li>
+    <li>
+      <a href="fees.html"><i class="bi bi-cash-coin me-2"></i> 物业费管理</a>
+    </li>
+    <li>
+      <a href="repairs.html"><i class="bi bi-tools me-2"></i> 报修服务</a>
+    </li>
+    <li>
+      <a href="facilities.html"><i class="bi bi-building-gear me-2"></i> 公共设施</a>
+    </li>
+    <li>
+      <a href="#"><i class="bi bi-gear me-2"></i> 系统设置</a>
+    </li>
+    <li>
+      <a href="../login.html"><i class="bi bi-box-arrow-right me-2"></i> 退出登录</a>
+    </li>
+  </ul>
+</div>
+
+<div class="main-content">
+  <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <div class="container-fluid">
+      <button class="btn btn-link d-lg-none" type="button" id="sidebarToggle">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="d-flex align-items-center ms-auto">
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://via.placeholder.com/40" alt="用户头像" class="user-avatar me-2">
+            <span>管理员</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> 个人资料</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> 设置</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="../login.html"><i class="bi bi-box-arrow-right me-2"></i> 退出登录</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card welcome-card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h4 class="card-title">欢迎回来，管理员</h4>
+                <p class="card-text">今天是2023年11月15日，星期三</p>
+              </div>
+              <div class="col-md-4 text-end">
+                <i class="bi bi-graph-up-arrow" style="font-size: 3rem; opacity: 0.7;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card card-custom">
+          <div class="card-body text-center">
+            <i class="bi bi-people card-icon mb-3"></i>
+            <h5 class="card-title">住户总数</h5>
+            <h2 class="card-text">256</h2>
+            <a href="residents.html" class="btn btn-sm btn-link">查看详情</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card card-custom">
+          <div class="card-body text-center">
+            <i class="bi bi-cash-coin card-icon mb-3"></i>
+            <h5 class="card-title">未缴费用</h5>
+            <h2 class="card-text">¥12,450</h2>
+            <a href="fees.html" class="btn btn-sm btn-link">查看详情</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card card-custom">
+          <div class="card-body text-center">
+            <i class="bi bi-tools card-icon mb-3"></i>
+            <h5 class="card-title">待处理报修</h5>
+            <h2 class="card-text">8</h2>
+            <a href="repairs.html" class="btn btn-sm btn-link">查看详情</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card card-custom">
+          <div class="card-body text-center">
+            <i class="bi bi-building-gear card-icon mb-3"></i>
+            <h5 class="card-title">设施预约</h5>
+            <h2 class="card-text">15</h2>
+            <a href="facilities.html" class="btn btn-sm btn-link">查看详情</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <div class="card card-custom">
+          <div class="card-header">
+            <h5 class="card-title mb-0">最近报修记录</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>报修ID</th>
+                  <th>住户</th>
+                  <th>问题类型</th>
+                  <th>状态</th>
+                  <th>日期</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>#REP-2023-001</td>
+                  <td>张先生 (A栋502)</td>
+                  <td>水管漏水</td>
+                  <td><span class="badge bg-warning">处理中</span></td>
+                  <td>2023-11-14</td>
+                  <td><a href="#" class="btn btn-sm btn-outline-primary">查看</a></td>
+                </tr>
+                <tr>
+                  <td>#REP-2023-002</td>
+                  <td>李女士 (B栋301)</td>
+                  <td>电梯故障</td>
+                  <td><span class="badge bg-danger">待处理</span></td>
+                  <td>2023-11-14</td>
+                  <td><a href="#" class="btn btn-sm btn-outline-primary">查看</a></td>
+                </tr>
+                <tr>
+                  <td>#REP-2023-003</td>
+                  <td>王先生 (C栋102)</td>
+                  <td>门禁损坏</td>
+                  <td><span class="badge bg-success">已完成</span></td>
+                  <td>2023-11-13</td>
+                  <td><a href="#" class="btn btn-sm btn-outline-primary">查看</a></td>
+                </tr>
+                <tr>
+                  <td>#REP-2023-004</td>
+                  <td>赵女士 (A栋201)</td>
+                  <td>电路问题</td>
+                  <td><span class="badge bg-info">已分配</span></td>
+                  <td>2023-11-12</td>
+                  <td><a href="#" class="btn btn-sm btn-outline-primary">查看</a></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-end mt-3">
+              <a href="repairs.html" class="btn btn-primary">查看全部</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card card-custom">
+          <div class="card-header">
+            <h5 class="card-title mb-0">物业费缴纳情况</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <h6>本月收缴率</h6>
+              <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 78%;" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">78%</div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <h6>季度收缴率</h6>
+              <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <h6>年度收缴率</h6>
+              <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">92%</div>
+              </div>
+            </div>
+            <div class="text-center mt-4">
+              <a href="fees.html" class="btn btn-outline-primary">查看详情</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('active');
+  });
+</script>
+</body>
+</html>

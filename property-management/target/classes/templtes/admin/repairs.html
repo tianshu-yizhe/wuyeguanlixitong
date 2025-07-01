@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物业管理系统 - 报修管理</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+    }
+    .repair-card {
+      border-left: 4px solid;
+      transition: all 0.3s;
+    }
+    .status-pending {
+      border-left-color: #ffc107;
+    }
+    .status-processing {
+      border-left-color: #17a2b8;
+    }
+    .status-completed {
+      border-left-color: #28a745;
+    }
+    .repair-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .technician-select {
+      min-width: 200px;
+    }
+  </style>
+</head>
+<body>
+<!-- 侧边栏和导航栏代码与admin-dashboard.html相同 -->
+
+<div class="main-content">
+  <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <!-- 导航栏代码与admin-dashboard.html相同 -->
+  </nav>
+
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="bi bi-tools me-2"></i> 报修管理</h4>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary active">全部</button>
+        <button class="btn btn-outline-secondary">待处理</button>
+        <button class="btn btn-outline-secondary">处理中</button>
+        <button class="btn btn-outline-secondary">已完成</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-custom">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="搜索报修记录...">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="float-end">
+                  <button class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-funnel"></i> 筛选
+                  </button>
+                  <button class="btn btn-outline-secondary">
+                    <i class="bi bi-download"></i> 导出
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>报修ID</th>
+                  <th>住户信息</th>
+                  <th>问题类型</th>
+                  <th>报修时间</th>
+                  <th>状态</th>
+                  <th>维修人员</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>#REP-2023-1121</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">张先生</h6>
+                        <small class="text-muted">A栋502室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>水管漏水</td>
+                  <td>2023-11-15 14:30</td>
+                  <td><span class="badge bg-info">处理中</span></td>
+                  <td>李师傅</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">详情</button>
+                    <button class="btn btn-sm btn-outline-success">完成</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#REP-2023-1122</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">王女士</h6>
+                        <small class="text-muted">B栋203室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>电路故障</td>
+                  <td>2023-11-16 09:15</td>
+                  <td><span class="badge bg-warning">待处理</span></td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">详情</button>
+                    <button class="btn btn-sm btn-outline-secondary">分配</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#REP-2023-1123</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" alt="住户头像" class="rounded-circle me-3" width="40" height="40">
+                      <div>
+                        <h6 class="mb-0">赵先生</h6>
+                        <small class="text-muted">C栋101室</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>电梯故障</td>
+                  <td>2023-11-16 18:45</td>
+                  <td><span class="badge bg-warning">待处理</span></td>
+                  <td>-</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">详情</button>
+                    <button class="btn btn-sm btn-outline-secondary">分配</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <nav aria-label="Page navigation" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">下一页</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 分配维修人员模态框 -->
+<div class="modal fade" id="assignTechnicianModal" tabindex="-1" aria-labelledby="assignTechnicianModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignTechnicianModalLabel">分配维修人员</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="repairId" class="form-label">报修单号</label>
+            <input type="text" class="form-control" id="repairId" value="#REP-2023-1122" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="technician" class="form-label">选择维修人员</label>
+            <select class="form-select technician-select" id="technician" required>
+              <option value="">请选择维修人员</option>
+              <option value="1">李师傅 (水电工)</option>
+              <option value="2">王师傅 (电工)</option>
+              <option value="3">张师傅 (综合维修)</option>
+              <option value="4">赵师傅 (电梯维修)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="estimatedTime" class="form-label">预计完成时间</label>
+            <input type="datetime-local" class="form-control" id="estimatedTime" required>
+          </div>
+          <div class="mb-3">
+            <label for="technicianNotes" class="form-label">备注说明</label>
+            <textarea class="form-control" id="technicianNotes" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">确认分配</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // 侧边栏切换代码与admin-dashboard.html相同
+
+  // 分配按钮点击事件
+  document.querySelectorAll('.btn-outline-secondary').forEach(btn => {
+    if(btn.textContent.includes('分配')) {
+      btn.addEventListener('click', function() {
+        const modal = new bootstrap.Modal(document.getElementById('assignTechnicianModal'));
+        modal.show();
+      });
+    }
+  });
+</script>
+</body>
+</html>

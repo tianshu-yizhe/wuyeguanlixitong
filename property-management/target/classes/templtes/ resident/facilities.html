@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物业管理系统 - 公共设施预约</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    /* 共用样式省略，与resident-dashboard.html相同 */
+    .facility-card {
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .facility-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .facility-img {
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
+    .facility-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .calendar-day {
+      text-align: center;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .calendar-day:hover {
+      background-color: #f8f9fa;
+    }
+    .calendar-day.active {
+      background-color: #6a11cb;
+      color: white;
+    }
+    .calendar-day.disabled {
+      color: #adb5bd;
+      cursor: not-allowed;
+    }
+    .time-slot {
+      padding: 8px 12px;
+      margin: 5px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .time-slot:hover {
+      background-color: #f8f9fa;
+    }
+    .time-slot.selected {
+      background-color: #6a11cb;
+      color: white;
+      border-color: #6a11cb;
+    }
+    .time-slot.booked {
+      background-color: #f8f9fa;
+      color: #adb5bd;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+<!-- 侧边栏省略，与resident-dashboard.html相同 -->
+<div class="main-content">
+  <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <!-- 导航栏省略，与resident-dashboard.html相同 -->
+  </nav>
+
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="bi bi-building-gear me-2"></i> 公共设施预约</h4>
+      <div>
+        <span class="badge bg-info me-2">2 预约中</span>
+        <span class="badge bg-success">5 历史预约</span>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <div class="card card-custom">
+          <div class="card-header">
+            <h5 class="card-title mb-0">可预约设施</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card facility-card h-100" data-bs-toggle="modal" data-bs-target="#bookFacilityModal" data-facility="gym">
+                  <img src="https://via.placeholder.com/300x180?text=健身房" class="card-img-top facility-img" alt="健身房">
+                  <div class="card-body">
+                    <h5 class="card-title">健身房</h5>
+                    <p class="card-text">配备齐全的健身设备，包括跑步机、力量训练器等。</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted"><i class="bi bi-people"></i> 最大容量: 10人</small>
+                      <small class="text-muted"><i class="bi bi-clock"></i> 开放时间: 6:00-22:00</small>
+                    </div>
+                  </div>
+                  <div class="facility-badge badge bg-primary">需预约</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card facility-card h-100" data-bs-toggle="modal" data-bs-target="#bookFacilityModal" data-facility="pool">
+                  <img src="https://via.placeholder.com/300x180?text=游泳池" class="card-img-top facility-img" alt="游泳池">
+                  <div class="card-body">
+                    <h5 class="card-title">游泳池</h5>
+                    <p class="card-text">标准25米泳道，配有更衣室和淋浴设施。</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted"><i class="bi bi-people"></i> 最大容量: 15人</small>
+                      <small class="text-muted"><i class="bi bi-clock"></i> 开放时间: 7:00-21:00</small>
+                    </div>
+                  </div>
+                  <div class="facility-badge badge bg-primary">需预约</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card facility-card h-100" data-bs-toggle="modal" data-bs-target="#bookFacilityModal" data-facility="meeting">
+                  <img src="https://via.placeholder.com/300x180?text=会议室" class="card-img-top facility-img" alt="会议室">
+                  <div class="card-body">
+                    <h5 class="card-title">会议室</h5>
+                    <p class="card-text">配备投影仪和白板，适合小型会议和聚会。</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted"><i class="bi bi-people"></i> 最大容量: 20人</small>
+                      <small class="text-muted"><i class="bi bi-clock"></i> 开放时间: 8:00-20:00</small>
+                    </div>
+                  </div>
+                  <div class="facility-badge badge bg-primary">需预约</div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card facility-card h-100">
+                  <img src="https://via.placeholder.com/300x180?text=儿童乐园" class="card-img-top facility-img" alt="儿童乐园">
+                  <div class="card-body">
+                    <h5 class="card-title">儿童乐园</h5>
+                    <p class="card-text">安全设施齐全的儿童游乐区，适合12岁以下儿童。</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted"><i class="bi bi-people"></i> 最大容量: 30人</small>
+                      <small class="text-muted"><i class="bi bi-clock"></i> 开放时间: 全天开放</small>
+                    </div>
+                  </div>
+                  <div class="facility-badge badge bg-success">免预约</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-custom">
+          <div class="card-header">
+            <h5 class="card-title mb-0">我的预约</h5>
+          </div>
+          <div class="card-body">
+            <div class="list-group">
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">健身房</h6>
+                  <span class="badge bg-info">已预约</span>
+                </div>
+                <small class="text-muted">2023-11-16 18:00-20:00</small>
+                <div class="mt-2">
+                  <button class="btn btn-sm btn-outline-danger">取消预约</button>
+                </div>
+              </div>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">游泳池</h6>
+                  <span class="badge bg-info">已预约</span>
+                </div>
+                <small class="text-muted">2023-11-17 10:00-11:30</small>
+                <div class="mt-2">
+                  <button class="btn btn-sm btn-outline-danger">取消预约</button>
+                </div>
+              </div>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">会议室</h6>
+                  <span class="badge bg-secondary">已完成</span>
+                </div>
+                <small class="text-muted">2023-11-10 14:00-16:00</small>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <a href="#" class="btn btn-outline-primary">查看全部预约</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-custom mt-4">
+          <div class="card-header">
+            <h5 class="card-title mb-0">预约规则</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 最多提前7天预约</li>
+              <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 每次最长使用2小时</li>
+              <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 每人每天最多预约2次</li>
+              <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 取消预约需提前4小时</li>
+              <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 迟到超过30分钟自动取消</li>
+            </ul>
+            <div class="alert alert-warning mt-3">
+              <i class="bi bi-exclamation-triangle me-2"></i> 违反预约规则可能导致预约权限受限
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 预约设施模态框 -->
+<div class="modal fade" id="bookFacilityModal" tabindex="-1" aria-labelledby="bookFacilityModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookFacilityModalLabel">预约 <span id="facilityName"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-4">
+              <h6>选择日期</h6>
+              <div class="card card-body">
+                <div class="d-flex justify-content-between mb-3">
+                  <button class="btn btn-sm btn-outline-secondary">&lt;</button>
+                  <h6 class="mb-0">2023年11月</h6>
+                  <button class="btn btn-sm btn-outline-secondary">&gt;</button>
+                </div>
+                <div class="row row-cols-7 g-1 mb-2">
+                  <div class="col text-center"><small>日</small></div>
+                  <div class="col text-center"><small>一</small></div>
+                  <div class="col text-center"><small>二</small></div>
+                  <div class="col text-center"><small>三</small></div>
+                  <div class="col text-center"><small>四</small></div>
+                  <div class="col text-center"><small>五</small></div>
+                  <div class="col text-center"><small>六</small></div>
+                </div>
+                <div class="row row-cols-7 g-1">
+                  <div class="col calendar-day disabled">29</div>
+                  <div class="col calendar-day disabled">30</div>
+                  <div class="col calendar-day disabled">31</div>
+                  <div class="col calendar-day">1</div>
+                  <div class="col calendar-day">2</div>
+                  <div class="col calendar-day">3</div>
+                  <div class="col calendar-day">4</div>
+                  <div class="col calendar-day">5</div>
+                  <div class="col calendar-day">6</div>
+                  <div class="col calendar-day">7</div>
+                  <div class="col calendar-day">8</div>
+                  <div class="col calendar-day">9</div>
+                  <div class="col calendar-day">10</div>
+                  <div class="col calendar-day">11</div>
+                  <div class="col calendar-day">12</div>
+                  <div class="col calendar-day">13</div>
+                  <div class="col calendar-day">14</div>
+                  <div class="col calendar-day">15</div>
+                  <div class="col calendar-day active">16</div>
+                  <div class="col calendar-day">17</div>
+                  <div class="col calendar-day">18</div>
+                  <div class="col calendar-day">19</div>
+                  <div class="col calendar-day">20</div>
+                  <div class="col calendar-day">21</div>
+                  <div class="col calendar-day">22</div>
+                  <div class="col calendar-day">23</div>
+                  <div class="col calendar-day">24</div>
+                  <div class="col calendar-day">25</div>
+                  <div class="col calendar-day">26</div>
+                  <div class="col calendar-day">27</div>
+                  <div class="col calendar-day">28</div>
+                  <div class="col calendar-day">29</div>
+                  <div class="col calendar-day">30</div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6>设施详情</h6>
+              <div class="card card-body">
+                <p id="facilityDescription"></p>
+                <div class="d-flex justify-content-between">
+                  <small><i class="bi bi-people"></i> 最大容量: <span id="facilityCapacity"></span></small>
+                  <small><i class="bi bi-clock"></i> 开放时间: <span id="facilityHours"></span></small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-4">
+              <h6>选择时间段</h6>
+              <div class="d-flex flex-wrap" id="timeSlots">
+                <!-- 时间段将通过JavaScript动态生成 -->
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6>预约信息</h6>
+              <form>
+                <div class="mb-3">
+                  <label for="bookingPurpose" class="form-label">使用目的</label>
+                  <input type="text" class="form-control" id="bookingPurpose" placeholder="例如: 家庭聚会、朋友聚会等">
+                </div>
+                <div class="mb-3">
+                  <label for="bookingPeople" class="form-label">使用人数</label>
+                  <input type="number" class="form-control" id="bookingPeople" min="1" value="1">
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="agreeRules">
+                  <label class="form-check-label" for="agreeRules">我已阅读并同意<a href="#">《公共设施使用规则》</a></label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="confirmBooking">确认预约</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('active');
+  });
+
+  // 设施预约功能
+  const bookModal = document.getElementById('bookFacilityModal');
+  const facilityName = document.getElementById('facilityName');
+  const facilityDescription = document.getElementById('facilityDescription');
+  const facilityCapacity = document.getElementById('facilityCapacity');
+  const facilityHours = document.getElementById('facilityHours');
+  const timeSlots = document.getElementById('timeSlots');
+  const confirmBooking = document.getElementById('confirmBooking');
+
+  const facilities = {
+    gym: {
+      name: '健身房',
+      description: '配备齐全的健身设备，包括跑步机、力量训练器等。提供毛巾和饮用水服务。',
+      capacity: '10人',
+      hours: '6:00-22:00'
+    },
+    pool: {
+      name: '游泳池',
+      description: '标准25米泳道，配有更衣室和淋浴设施。请自带泳帽和泳镜。',
+      capacity: '15人',
+      hours: '7:00-21:00'
+    },
+    meeting: {
+      name: '会议室',
+      description: '配备投影仪和白板，适合小型会议和聚会。提供无线网络和饮用水。',
+      capacity: '20人',
+      hours: '8:00-20:00'
+    }
+  };
+
+  // 生成时间段
+  function generateTimeSlots() {
+    timeSlots.innerHTML = '';
+    const slots = [
+      { time: '8:00-9:30', available: true },
+      { time: '9:30-11:00', available: true },
+      { time: '11:00-12:30', available: false },
+      { time: '13:00-14:30', available: true },
+      { time: '14:30-16:00', available: true },
+      { time: '16:00-17:30', available: true },
+      { time: '18:00-19:30', available: true },
+      { time: '19:30-21:00', available: false }
+    ];
+
+    slots.forEach(slot => {
+      const slotElement = document.createElement('div');
+      slotElement.className = `time-slot ${slot.available ? '' : 'booked'}`;
+      slotElement.textContent = slot.time;
+      if(slot.available) {
+        slotElement.addEventListener('click', function() {
+          document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      }
+      timeSlots.appendChild(slotElement);
+    });
+  }
+
+  // 设施卡片点击事件
+  document.querySelectorAll('.facility-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const facilityType = this.dataset.facility;
+      if(facilityType && facilities[facilityType]) {
+        const facility = facilities[facilityType];
+        facilityName.textContent = facility.name;
+        facilityDescription.textContent = facility.description;
+        facilityCapacity.textContent = facility.capacity;
+        facilityHours.textContent = facility.hours;
+        generateTimeSlots();
+      }
+    });
+  });
+
+  // 日历日期点击事件
+  document.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
+    day.addEventListener('click', function() {
+      document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // 确认预约
+  confirmBooking.addEventListener('click', function() {
+    const selectedDate = document.querySelector('.calendar-day.active')?.textContent;
+    const selectedTime = document.querySelector('.time-slot.selected')?.textContent;
+
+    if(!selectedDate || !selectedTime) {
+      alert('请选择日期和时间段');
+      return;
+    }
+
+    if(!document.getElementById('agreeRules').checked) {
+      alert('请同意《公共设施使用规则》');
+      return;
+    }
+
+    alert(`预约成功！\n设施: ${facilityName.textContent}\n日期: 11月${selectedDate}日\n时间: ${selectedTime}`);
+    const bsModal = bootstrap.Modal.getInstance(bookModal);
+    bsModal.hide();
+  });
+</script>
+</body>
+</html>
